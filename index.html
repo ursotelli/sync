@@ -15,7 +15,12 @@
 <!-- <h1>UTF-8 string length & byte counter</h1> -->
 <div id="content">
 <p class="description">Max payload size</p><input value="3.9" class="inputMsgNb" size="4"></input> MB
-<p class="description">JSON reservation summary (UTF-8)</p><textarea autofocus class="payloadBox"></textarea>
+<p class="description">JSON reservation summary (UTF-8)
+<button class="btn" type="button">Stringify</button>
+<button class="btn" type="button">Parse JSON</button>  
+</p>
+<textarea autofocus class="payloadBox"></textarea>
+
 <div id="result">
 <p>That’s <strong id=characters>5 characters</strong>, totaling <strong id=bytes>7 bytes</strong>.</p>
 <p>Maximum number of messages per payload: <strong id=messageNb>15000</strong>.</p>

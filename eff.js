@@ -5,7 +5,8 @@
 	    bytes = document.getElementById('bytes'),
 	    payloadSize = document.getElementsByTagName('input')[0],
 	    messageNb = document.getElementById('messageNb'),
-	    permalink = document.getElementById('permalink'),
+	    removeFormatButton = document.getElementsByTagName('button')[0],
+	    parseJsonButton = document.getElementsByTagName('button')[1],
 	    regexNumberGroup = /(?=(?:\d{3})+$)(?!\b)/g,
 	    // https://mathiasbynens.be/notes/localstorage-pattern
 	    storage = (function() {
@@ -20,6 +21,7 @@
 	    		return result && storage;
 	    	} catch(e) {}
 	    }());
+
 
 	// Taken from https://mths.be/punycode
 	function ucs2decode(string) {
@@ -48,20 +50,13 @@
 		return output;
 	}
 
-	function encode(string) {
-		// URL-encode some more characters to avoid issues when using permalink URLs in Markdown
-		return encodeURIComponent(string).replace(/['()_*]/g, function(character) {
-			return '%' + character.charCodeAt().toString(16);
-		});
-	}
-
 	function formatNumber(number, unit) {
 		return String(number).replace(regexNumberGroup, ',') + ' ' + unit + (number == 1 ? '' : 's');
 	}
 
 	function update() {
 		var value = textarea.value.replace(/\r\n/g, '\n'),
-		    encodedValue = encode(value),
+		    // encodedValue = encode(value),
 		    byteCount = utf8.encode(value).length, // https://mths.be/utf8js
 		    pSize = Number(payloadSize.value)*Math.pow(10, 6);
 		    characterCount = ucs2decode(value).length;
@@ -71,6 +66,17 @@
 		messageNb.innerHTML = formatNumber(msgNb, 'reservation');
 		storage && (storage.byteCountText = value) && (storage.payloadSizeText = pSize/Math.pow(10^6));
 	};
+
+	function removeFormatting() {
+		textarea.value = JSON.stringify(JSON.parse(textarea.value));
+	};
+
+	function addFormatting() {
+		var ugly = textarea.value;
+    	var obj = JSON.parse(ugly);
+		var pretty = JSON.stringify(obj, undefined, 4);
+		textarea.value = pretty;
+	}
 
 	// https://mathiasbynens.be/notes/oninput
 	textarea.onkeyup = update;
@@ -83,6 +89,9 @@
 		payloadSize.onkeyup = null;
 		update();
 	}
+
+	removeFormatButton.onclick = removeFormatting;
+	parseJsonButton.onclick = addFormatting;
 
 	if (storage) {
 		storage.byteCountText && (textarea.value = storage.byteCountText) ;
