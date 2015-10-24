@@ -7,6 +7,8 @@
 	    messageNb = document.getElementById('messageNb'),
 	    removeFormatButton = document.getElementsByTagName('button')[0],
 	    parseJsonButton = document.getElementsByTagName('button')[1],
+	    css = document.getElementById('stylesheet'),
+	    themer = document.getElementById('themer'),
 	    regexNumberGroup = /(?=(?:\d{3})+$)(?!\b)/g,
 	    // https://mathiasbynens.be/notes/localstorage-pattern
 	    storage = (function() {
@@ -72,12 +74,23 @@
 		update();
 	};
 
-	function addFormatting() {
+	function addFormatting() {		
 		var ugly = textarea.value;
     	var obj = JSON.parse(ugly);
 		var pretty = JSON.stringify(obj, undefined, 4);
 		textarea.value = pretty;
 		update();
+	}
+
+	function changeTheme() {
+		console.log(themer.innerHTML);
+		if (themer.innerHTML === "Dark") {
+			css.href = 'effDark.css';
+			themer.innerHTML = "Bright";
+		} else {
+			css.href = 'eff.css';
+			themer.innerHTML = "Dark";
+		}
 	}
 
 	// https://mathiasbynens.be/notes/oninput
@@ -94,6 +107,7 @@
 
 	removeFormatButton.onclick = removeFormatting;
 	parseJsonButton.onclick = addFormatting;
+	themer.onclick = changeTheme;
 
 	if (storage) {
 		storage.byteCountText && (textarea.value = storage.byteCountText) ;
