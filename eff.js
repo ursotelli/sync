@@ -69,6 +69,7 @@
 
 	function removeFormatting() {
 		textarea.value = JSON.stringify(JSON.parse(textarea.value));
+		update();
 	};
 
 	function addFormatting() {
@@ -76,6 +77,7 @@
     	var obj = JSON.parse(ugly);
 		var pretty = JSON.stringify(obj, undefined, 4);
 		textarea.value = pretty;
+		update();
 	}
 
 	// https://mathiasbynens.be/notes/oninput
